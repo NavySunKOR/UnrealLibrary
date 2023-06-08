@@ -10,8 +10,14 @@ ANoiseMapGenerator::ANoiseMapGenerator()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	SizeX = 128;
-	SizeY = 128;
+	SizeX = 256;
+	SizeY = 256;
+
+	Scale = 1.f;
+	Persistence = 0.5f;
+	Octave = 8;
+	OffsetY = 0;
+	OffsetX = 0;
 
 }
 
@@ -44,7 +50,7 @@ void ANoiseMapGenerator::GenerateNoiseData()
 	{
 		for (int32 XPos = 0; XPos < SizeX; ++XPos)
 		{
-			float AccFrequency = 1;
+			float AccFrequency = Scale;
 			float AccAmplitude = 1;
 			float MaxValue = 0;
 			float Sumup = 0;
@@ -56,12 +62,13 @@ void ANoiseMapGenerator::GenerateNoiseData()
 				Sumup += FMath::PerlinNoise2D(FVector2D(XPosF, YPosF)) * AccAmplitude;
 
 				MaxValue += AccAmplitude;
-				AccAmplitude *= 2;
-				AccFrequency *= Persistence;
+				AccAmplitude *= Persistence;
+				AccFrequency *= 2;
 			}
 
 			float Result = Sumup / MaxValue;
 			Result = (Result + 1.f) / 2.f;
+			Result = FMath::Clamp(Result, 0.f, 1.f);
 
 			NoiseData[XPos + YPos * SizeX] = Result;
 		}

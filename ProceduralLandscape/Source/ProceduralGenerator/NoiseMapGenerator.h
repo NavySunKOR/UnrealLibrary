@@ -38,6 +38,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Noise Map Setting")
 	float Persistence;
 
+	//UPROPERTY(EditAnywhere, Category = "Noise Map Setting")
+	//float Lacunarity;
+
+	UPROPERTY(EditAnywhere, Category = "Noise Map Setting")
+	float Scale;
+
 
 
 	UPROPERTY(VisibleAnywhere)
